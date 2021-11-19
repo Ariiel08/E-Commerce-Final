@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/mobile_navigation"
+            app:startDestination="@+id/nav_home">
+
+    <fragment
+            android:id="@+id/nav_home"
+            android:name="com.example.ecommerce_final.ui.home.HomeFragment"
+            android:label="@string/menu_home"
+            tools:layout="@layout/fragment_home"/>
+
+    <fragment
+            android:id="@+id/nav_category"
+            android:name="com.example.ecommerce_final.ui.category.CategoryFragment"
+            android:label="@string/menu_category"
+            tools:layout="@layout/fragment_category">
+        <action
+                android:id="@+id/category_to_registerCategory"
+                app:destination="@id/nav_registerCategory" />
+    </fragment>
+
+    <fragment
+            android:id="@+id/nav_registerCategory"
+            android:name="com.example.ecommerce_final.ui.category.RegisterCategoryFragment"
+            android:label="@string/header_registerCategory"
+            tools:layout="@layout/fragment_register_category">
+
+        <action
+                android:id="@+id/registerCategory_to_category"
+                app:destination="@id/nav_category" />
+    </fragment>
+
+    <fragment
+            android:id="@+id/nav_product"
+            android:name="com.example.ecommerce_final.ui.product.ProductFragment"
+            android:label="@string/menu_product"
+            tools:layout="@layout/fragment_product">
+
+        <action
+                android:id="@+id/product_to_registerProduct"
+                app:destination="@id/nav_registerProduct" />
+    </fragment>
+
+    <fragment
+            android:id="@+id/nav_registerProduct"
+            android:name="com.example.ecommerce_final.ui.product.RegisterProductFragment"
+            android:label="@string/header_registerProduct"
+            tools:layout="@layout/fragment_register_product">
+
+        <action
+                android:id="@+id/registerProduct_to_product"
+                app:destination="@id/nav_product" />
+    </fragment>
+
+
+</navigation>
