@@ -19,6 +19,12 @@ public interface CategoryDAO {
     @Query("SELECT * FROM category WHERE id = :id")
     Category find(int id);
 
+    @Query("SELECT * FROM category WHERE name = :name")
+    Category findByName(String name);
+
+    @Query("SELECT * FROM category WHERE id = :id")
+    LiveData<CategoryProducts> findProductCategory(int id);
+
     @Transaction
     @Query("SELECT * FROM category ORDER BY id")
     LiveData<List<CategoryProducts>> findAll();

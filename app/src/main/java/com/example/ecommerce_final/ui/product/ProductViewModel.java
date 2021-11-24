@@ -13,8 +13,10 @@ import java.util.List;
 public class ProductViewModel extends ViewModel {
 
     private LiveData<List<Product>> productListLiveData;
+    private AppDatabase appDatabase;
 
     public ProductViewModel(@NonNull AppDatabase appDatabase) {
+        this.appDatabase = appDatabase;
         productListLiveData = appDatabase.productDAO().findAll();
     }
 

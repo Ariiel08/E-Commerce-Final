@@ -45,6 +45,7 @@ public class RegisterProductFragment extends Fragment {
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
     private ProductDAO productDAO;
     private String encodedImage = null;
+    private Category category;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -92,10 +93,12 @@ public class RegisterProductFragment extends Fragment {
         }
 
         binding.btnAddProduct.setOnClickListener(v -> {
-            Product product = new Product(UUID.randomUUID().toString(), binding.txtPrice.getText().toString().trim(),
-                    binding.txtDescription.getText().toString().trim(), encodedImage);
 
             AppExecutors.getInstance().diskIO().execute(() -> {
+                category = AppDatabase.getInstance(root.getContext()).categoryDAO().findByName(binding.spnCategory.getSelectedItem().toString());
+
+                Product product = new Product(UUID.randomUUID().toString(), binding.txtPrice.getText().toString().trim(),
+                        binding.txtDescription.getText().toString().trim(), encodedImage, category.getId());
                 if(this.getArguments().getInt("idProduct") != -1){
                     product.setId(this.getArguments().getInt("idProduct"));
                     productDAO.update(product);

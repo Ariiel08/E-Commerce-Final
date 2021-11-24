@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.cardview.widget.CardView;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.ecommerce_final.R;
@@ -26,10 +27,13 @@ import com.example.ecommerce_final.models.Category;
 import com.example.ecommerce_final.models.Product;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder>{
     private List<Product> products;
+    private List<Product> searchProducts;
     private ItemProductBinding binding;
     private final Context context;
 
@@ -39,6 +43,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     public void setProducts(List<Product> products){
         this.products = products;
+        this.searchProducts = new ArrayList<>(products);
+
         notifyDataSetChanged();
     }
 
@@ -89,6 +95,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             //displaying the popup
             popup.show();
         });
+
+        holder.productItem.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putInt("idProduct", products.get(holder.getAdapterPosition()).getId());
+            Navigation.findNavController(holder.itemView)
+                    .navigate(R.id.nav_productDetails, bundle);
+        });
     }
 
     @Override
@@ -104,6 +117,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         TextView tvDesc, tvPrice, tvUid;
         ImageView imgProduct;
         Button btnOptions;
+        CardView productItem;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -113,7 +127,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             tvUid = binding.tvUid;
             imgProduct = binding.imgProduct;
             btnOptions = binding.btnProductConfig;
-
+            productItem = binding.productItem;
 
         }
     }
@@ -122,5 +136,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         byte[] data = android.util.Base64.decode(encodedImage, android.util.Base64.DEFAULT);
 
         return BitmapFactory.decodeByteArray(data, 0, data.length);
+    }
+
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        products.clear();
+        if (charText.length() == 0) {
+            products.addAll(searchProducts);
+        } else {
+            for (Product product : searchProducts) {
+                if (product.getDescription().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    products.add(product);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }

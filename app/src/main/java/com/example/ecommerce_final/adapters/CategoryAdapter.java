@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -90,6 +91,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             popup.show();
         });
 
+        holder.categoryItem.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putInt("id", categories.get(holder.getAdapterPosition()).category.getId());
+            Navigation.findNavController(holder.itemView)
+                    .navigate(R.id.category_to_product, bundle);
+        });
+
     }
 
     @Override
@@ -105,12 +113,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         ImageView imgCategory;
         TextView tvNameCategory;
         Button btnEditCategory;
+        CardView categoryItem;
 
         public ViewHolder(View v) {
             super(v);
             imgCategory = binding.imgCategory;
             tvNameCategory = binding.tvNameCategory;
             btnEditCategory = binding.btnEditCategory;
+            categoryItem = binding.categoryItem;
 
         }
     }

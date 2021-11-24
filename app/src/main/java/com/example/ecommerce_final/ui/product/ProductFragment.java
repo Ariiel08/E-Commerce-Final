@@ -24,6 +24,7 @@ import com.example.ecommerce_final.databinding.FragmentProductBinding;
 import com.example.ecommerce_final.models.Category;
 import com.example.ecommerce_final.models.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductFragment extends Fragment {
@@ -33,6 +34,7 @@ public class ProductFragment extends Fragment {
     private ProductAdapter productAdapter;
     private AppDatabase appDatabase;
     private RecyclerView recyclerView;
+    private int categoryId;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -50,12 +52,33 @@ public class ProductFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
         recyclerView.setAdapter(productAdapter);
 
-        productViewModel.getProductListLiveData().observe(this, new Observer<List<Product>>() {
-            @Override
-            public void onChanged(List<Product> products) {
-                productAdapter.setProducts(products);
+        try{
+            if(this.getArguments().getInt("id") != -1){
+                categoryId = this.getArguments().getInt("id");
+                productViewModel.getProductListLiveData().observe(this, new Observer<List<Product>>() {
+                    @Override
+                    public void onChanged(List<Product> products) {
+                        List<Product> newProducts = new ArrayList<>();
+                        for (Product product : products) {
+                            if(product.getCategoryId() == categoryId){
+                                newProducts.add(product);
+                            }
+                        }
+
+                        productAdapter.setProducts(newProducts);
+                    }
+                });
             }
-        });
+        }catch (NullPointerException ex){
+            productViewModel.getProductListLiveData().observe(this, new Observer<List<Product>>() {
+                @Override
+                public void onChanged(List<Product> products) {
+                    productAdapter.setProducts(products);
+                }
+            });
+        }
+
+
 
         Bundle bundle = new Bundle();
         bundle.putInt("idProduct", -1);

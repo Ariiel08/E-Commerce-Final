@@ -13,11 +13,12 @@ public class Product {
     private String encodedImage;
     private int categoryId;
 
-    public Product(String uid, String price, String description, String encodedImage) {
+    public Product(String uid, String price, String description, String encodedImage, int categoryId) {
         this.uid = uid;
         this.price = price;
         this.description = description;
         this.encodedImage = encodedImage;
+        this.categoryId = categoryId;
     }
 
     public int getId() {

@@ -19,6 +19,9 @@
         <action
                 android:id="@+id/category_to_registerCategory"
                 app:destination="@id/nav_registerCategory" />
+        <action
+                android:id="@+id/category_to_product"
+                app:destination="@id/nav_product" />
     </fragment>
 
     <fragment
@@ -41,6 +44,18 @@
         <action
                 android:id="@+id/product_to_registerProduct"
                 app:destination="@id/nav_registerProduct" />
+
+        <action
+                android:id="@+id/product_to_productDetails"
+                app:destination="@id/nav_productDetails" />
+    </fragment>
+
+    <fragment
+            android:id="@+id/nav_productDetails"
+            android:name="com.example.ecommerce_final.ui.product.ProductDetailsFragment"
+            android:label="@string/menu_product"
+            tools:layout="@layout/fragment_product_details">
+
     </fragment>
 
     <fragment
@@ -52,6 +67,17 @@
         <action
                 android:id="@+id/registerProduct_to_product"
                 app:destination="@id/nav_product" />
+    </fragment>
+
+    <fragment
+            android:id="@+id/nav_search"
+            android:name="com.example.ecommerce_final.SearchFragment"
+            android:label="@string/header_registerProduct"
+            tools:layout="@layout/fragment_search">
+
+        <action
+                android:id="@+id/main_to_search"
+                app:destination="@id/nav_search" />
     </fragment>
 
 
