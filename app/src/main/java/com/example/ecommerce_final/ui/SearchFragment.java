@@ -1,4 +1,4 @@
-package com.example.ecommerce_final;
+package com.example.ecommerce_final.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +17,6 @@ import com.example.ecommerce_final.databinding.FragmentSearchBinding;
 import com.example.ecommerce_final.models.Product;
 import com.example.ecommerce_final.ui.product.ProductViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

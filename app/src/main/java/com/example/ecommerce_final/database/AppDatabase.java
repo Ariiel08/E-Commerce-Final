@@ -8,7 +8,7 @@ import com.example.ecommerce_final.models.Category;
 import com.example.ecommerce_final.models.Product;
 import com.example.ecommerce_final.models.User;
 
-@Database(entities = {User.class, Category.class, Product.class}, version = 1)
+@Database(entities = {Category.class, Product.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "ecommerce";
     private static final Object LOCK = new Object();
@@ -23,7 +23,6 @@ public abstract class AppDatabase extends RoomDatabase {
         return sIntance;
     }
 
-    public abstract UserDAO userDAO();
     public abstract CategoryDAO categoryDAO();
     public abstract ProductDAO productDAO();
 }

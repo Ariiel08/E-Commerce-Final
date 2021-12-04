@@ -60,7 +60,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull @NotNull ProductAdapter.ViewHolder holder, int position) {
         holder.tvUid.setText(products.get(position).getUid());
-        holder.tvPrice.setText(products.get(position).getPrice());
+        holder.tvPrice.setText(String.valueOf(products.get(position).getPrice()));
         holder.tvDesc.setText(products.get(position).getDescription());
 
         if(products.get(position).getEncodedImage() != null){

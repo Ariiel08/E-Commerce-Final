@@ -97,7 +97,7 @@ public class RegisterProductFragment extends Fragment {
             AppExecutors.getInstance().diskIO().execute(() -> {
                 category = AppDatabase.getInstance(root.getContext()).categoryDAO().findByName(binding.spnCategory.getSelectedItem().toString());
 
-                Product product = new Product(UUID.randomUUID().toString(), binding.txtPrice.getText().toString().trim(),
+                Product product = new Product(UUID.randomUUID().toString(), Double.parseDouble(binding.txtPrice.getText().toString().trim()),
                         binding.txtDescription.getText().toString().trim(), encodedImage, category.getId());
                 if(this.getArguments().getInt("idProduct") != -1){
                     product.setId(this.getArguments().getInt("idProduct"));
@@ -194,7 +194,7 @@ public class RegisterProductFragment extends Fragment {
     private void fillFields(Product product) {
         if(product != null){
             binding.txtDescription.setText(product.getDescription());
-            binding.txtPrice.setText(product.getPrice());
+            binding.txtPrice.setText(String.valueOf(product.getPrice()));
 
             if(product.getEncodedImage() != null){
                 binding.imgSelectProduct.setImageBitmap(decodeString(product.getEncodedImage()));

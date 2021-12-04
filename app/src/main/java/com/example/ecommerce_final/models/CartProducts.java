@@ -1,32 +1,19 @@
 package com.example.ecommerce_final.models;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+public class CartProducts {
 
-@Entity
-public class Product {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
     private String uid;
     private double price;
+    private int quantity;
     private String description;
     private String encodedImage;
-    private int categoryId;
 
-    public Product(String uid, double price, String description, String encodedImage, int categoryId) {
+    public CartProducts(String uid, double price, int quantity, String description, String encodedImage) {
         this.uid = uid;
         this.price = price;
+        this.quantity = quantity;
         this.description = description;
         this.encodedImage = encodedImage;
-        this.categoryId = categoryId;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUid() {
@@ -45,6 +32,14 @@ public class Product {
         this.price = price;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -59,13 +54,5 @@ public class Product {
 
     public void setEncodedImage(String encodedImage) {
         this.encodedImage = encodedImage;
-    }
-
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
     }
 }

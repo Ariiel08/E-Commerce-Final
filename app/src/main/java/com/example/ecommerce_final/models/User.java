@@ -1,83 +1,119 @@
 package com.example.ecommerce_final.models;
 
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
+import java.io.Serializable;
+import java.util.Date;
 
-@Entity
-public class User {
+public class User implements Serializable {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-    private String name;
-    private String username;
+    public enum ROL {SELLER, CUSTOMER}
+
+    private int uid;
+    private String firstName;
+    private String lastName;
     private String email;
     private String password;
+    private ROL rol;
     private String contact;
+    private String birthday;
+    private String photo;
 
-    public User(int id, String name, String username, String email, String password, String contact) {
-        this.id = id;
-        this.name = name;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.contact = contact;
+    public User() {
+
     }
 
-    @Ignore
-    public User(String name, String username, String email, String password, String contact) {
-        this.name = name;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.contact = contact;
+    public int getUid() {
+        return uid;
     }
 
-    public int getId() {
-        return id;
+    public User setUid(int uid) {
+        this.uid = uid;
+        return this;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getName() {
-        return name;
+    public User setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public User setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public User setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public User setPassword(String password) {
         this.password = password;
+        return this;
+    }
+
+    public ROL getRol() {
+        return rol;
+    }
+
+    public User setRol(ROL rol) {
+        this.rol = rol;
+        return this;
     }
 
     public String getContact() {
         return contact;
     }
 
-    public void setContact(String contact) {
+    public User setContact(String contact) {
         this.contact = contact;
+        return this;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public User setBirthday(String birthday) {
+        this.birthday = birthday;
+        return this;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public User setPhoto(String photo) {
+        this.photo = photo;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid=" + uid +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", rol=" + rol +
+                ", contact='" + contact + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", photo='" + photo + '\'' +
+                '}';
     }
 }

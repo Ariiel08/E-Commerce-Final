@@ -12,12 +12,6 @@ public class Category {
     private String name;
     private String encodedImage;
 
-
-
-//    public Category(String name) {
-//        this.name = name;
-//    }
-
     public Category(String name, String encodedImage) {
         this.name = name;
         this.encodedImage = encodedImage;

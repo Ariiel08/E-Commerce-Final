@@ -56,6 +56,10 @@
             android:label="@string/menu_product"
             tools:layout="@layout/fragment_product_details">
 
+        <action
+                android:id="@+id/productDetails_to_cart"
+                app:destination="@id/nav_cart" />
+
     </fragment>
 
     <fragment
@@ -71,13 +75,21 @@
 
     <fragment
             android:id="@+id/nav_search"
-            android:name="com.example.ecommerce_final.SearchFragment"
+            android:name="com.example.ecommerce_final.ui.SearchFragment"
             android:label="@string/header_registerProduct"
             tools:layout="@layout/fragment_search">
 
         <action
                 android:id="@+id/main_to_search"
                 app:destination="@id/nav_search" />
+    </fragment>
+
+    <fragment
+            android:id="@+id/nav_cart"
+            android:name="com.example.ecommerce_final.ui.cart.CartFragment"
+            android:label="@string/menu_cart"
+            tools:layout="@layout/fragment_cart">
+
     </fragment>
 
 

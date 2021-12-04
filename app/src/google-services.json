@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "252399552375",
+    "project_id": "fir-fotos-5d377",
+    "storage_bucket": "fir-fotos-5d377.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252399552375:android:f1bcccfcdeb43d28c94372",
+        "android_client_info": {
+          "package_name": "com.example.ecommerce_final"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "252399552375-an9h8km7g3ksmsfkhcnhoqs9hp9s9sm3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNh-84atYCW2P58miRo_oOGK64Kan_mAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "252399552375-an9h8km7g3ksmsfkhcnhoqs9hp9s9sm3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
