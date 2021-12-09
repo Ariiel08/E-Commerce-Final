@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".ui.ProfileFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+                android:src="@drawable/user"
+                app:civ_border="true"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="8dp"
+                app:civ_shadow="true"
+                app:civ_shadow_color="@color/white"
+                app:civ_shadow_radius="6dp"
+                android:layout_width="219dp"
+                android:layout_height="187dp" android:id="@+id/imgProfile2"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="28dp" app:layout_constraintStart_toStartOf="parent"
+                android:layout_gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/tvProfileName"
+                app:layout_constraintTop_toBottomOf="@+id/imgProfile2"
+                android:layout_marginTop="16dp" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" android:textSize="20sp"/>
+        <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/tvProfileEmail"
+                app:layout_constraintTop_toBottomOf="@+id/tvProfileName"
+                android:layout_marginTop="16dp" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" android:textSize="16sp"/>
+        <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/tvProfileContact"
+                app:layout_constraintTop_toBottomOf="@+id/tvProfileEmail"
+                android:layout_marginTop="16dp" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" android:textSize="16sp"/>
+        <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/tvProfileRol"
+                app:layout_constraintTop_toBottomOf="@+id/tvProfileContact"
+                android:textSize="16sp" android:layout_marginTop="16dp" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/tvProfileBirthday"
+                app:layout_constraintTop_toBottomOf="@+id/tvProfileRol"
+                android:layout_marginTop="16dp" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" android:textSize="16sp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

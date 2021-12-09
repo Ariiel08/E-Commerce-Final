@@ -22,6 +22,7 @@ public interface CategoryDAO {
     @Query("SELECT * FROM category WHERE name = :name")
     Category findByName(String name);
 
+    @Transaction
     @Query("SELECT * FROM category WHERE id = :id")
     LiveData<CategoryProducts> findProductCategory(int id);
 
@@ -29,8 +30,9 @@ public interface CategoryDAO {
     @Query("SELECT * FROM category ORDER BY id")
     LiveData<List<CategoryProducts>> findAll();
 
-    @Insert
-    void insert(Category category);
+    @Transaction
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long insert(Category category);
 
     @Update
     void update(Category category);

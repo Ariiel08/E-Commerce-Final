@@ -3,6 +3,7 @@ package com.example.ecommerce_final.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,22 +12,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.ecommerce_final.R;
 import com.example.ecommerce_final.databinding.ItemCartBinding;
+import com.example.ecommerce_final.models.Carousel;
+import com.example.ecommerce_final.models.CarouselProducts;
 import com.example.ecommerce_final.models.CartProducts;
 import com.example.ecommerce_final.services.CartServices;
+import com.example.ecommerce_final.services.FirebaseServices;
+import com.example.ecommerce_final.services.NetResponse;
 import com.example.ecommerce_final.services.PrefManager;
 import com.google.gson.Gson;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
+    private static final String TAG = "CartAdapter";
     private ItemCartBinding binding;
     private final Context context;
     private CartServices cartServices = CartServices.getInstance();
     private PrefManager pref;
     private List<CartProducts> cartProducts;
+    private List<CarouselProducts> elements;
 
     public CartAdapter(Context context){
         this.context = context;
@@ -37,6 +47,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
         this.cartProducts = cartProducts;
 
         notifyDataSetChanged();
+    }
+
+    public void setCarouselProducts(List<CarouselProducts> elements){
+        this.elements = elements;
     }
 
     @NonNull
@@ -63,6 +77,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
             cartProducts = cartServices.getCart().getProducts();
             updateProductPref();
             notifyDataSetChanged();
+            refreshFragment();
+
         });
 
         holder.tvQuantity.setText(String.valueOf(cartProducts.get(position).getQuantity()));
@@ -72,6 +88,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
             cartServices.getCart().getProducts().get(position).setQuantity(quantity + 1);
             cartProducts = cartServices.getCart().getProducts();
             holder.tvQuantity.setText(String.valueOf(cartProducts.get(position).getQuantity()));
+            refreshFragment();
         });
 
         holder.btnMinusCart.setOnClickListener(v -> {
@@ -79,10 +96,24 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
             if (quantity > 1){
                 quantity -= 1;
             }
+
             cartServices.getCart().getProducts().get(position).setQuantity(quantity);
             cartProducts = cartServices.getCart().getProducts();
             holder.tvQuantity.setText(String.valueOf(quantity));
+
+            refreshFragment();
         });
+
+
+        if (cartProducts.get(position).carousels != null && !cartProducts.get(position).carousels.isEmpty()) {
+            Optional<Carousel> optional = cartProducts.get(position).carousels.stream()
+                    .sorted((a1, a2) -> Integer.valueOf(a1.getLineNum()).compareTo(a2.getLineNum()))
+                    .findFirst();
+
+            if (optional.isPresent()) {
+                downloadImage(optional.get().getPhoto(), binding.imgProductCart);
+            }
+        }
     }
 
     @Override
@@ -121,6 +152,22 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
         return BitmapFactory.decodeByteArray(data, 0, data.length);
     }
 
+    public static void downloadImage(@NonNull String photo, @NonNull ImageView imageView) {
+        if (photo != null && !photo.isEmpty()) {
+            FirebaseServices.obtain().download(photo, new NetResponse<Bitmap>() {
+                @Override
+                public void onResponse(Bitmap response) {
+                    imageView.setImageBitmap(response);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    Log.e(TAG, t.getMessage());
+                }
+            });
+        }
+    }
+
     public void updateProductPref(){
         pref.getEditor().remove("products");
         pref.getEditor().commit();
@@ -129,5 +176,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
         for (CartProducts cartProducts: cartProducts) {
             pref.update("products", gson.toJson(cartProducts));
         }
+    }
+
+    private void refreshFragment(){
+        Navigation.findNavController(binding.getRoot()).popBackStack();
+        Navigation.findNavController(binding.getRoot())
+                .navigate(R.id.nav_cart);
     }
 }

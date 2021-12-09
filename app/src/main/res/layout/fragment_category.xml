@@ -18,5 +18,5 @@
             android:clickable="true" android:id="@+id/floatBtnAddCategory"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.498"
-            android:layout_marginBottom="16dp" app:backgroundTint="@color/colorPrimary"/>
+            android:layout_marginBottom="16dp" app:backgroundTint="@color/purple_500"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

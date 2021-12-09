@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="startColor">#5800d6</color>
     <color name="endColor">#a166f5</color>
+    <color name="badge">#ff3f33</color>
 </resources>

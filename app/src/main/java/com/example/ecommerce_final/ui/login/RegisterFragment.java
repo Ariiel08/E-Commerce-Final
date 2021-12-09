@@ -24,6 +24,7 @@ import com.example.ecommerce_final.databinding.FragmentRegisterBinding;
 import com.example.ecommerce_final.models.User;
 import com.example.ecommerce_final.services.FirebaseServices;
 import com.example.ecommerce_final.services.NetResponse;
+import com.example.ecommerce_final.services.PrefManager;
 import com.example.ecommerce_final.services.UserServices;
 import com.example.ecommerce_final.utils.ValidUtil;
 import com.kaopiz.kprogresshud.KProgressHUD;
@@ -47,35 +48,13 @@ public class RegisterFragment extends Fragment {
 
     private FragmentRegisterBinding binding;
     private View root;
-    private Uri uri;
+    private Uri uri = null;
     private int uid;
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
-
-    public RegisterFragment() {
-
-    }
-
-    public static RegisterFragment newInstance(String param1, String param2) {
-        RegisterFragment fragment = new RegisterFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private PrefManager session;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -83,6 +62,7 @@ public class RegisterFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentRegisterBinding.inflate(inflater, container, false);
         root = binding.getRoot();
+        session = new PrefManager(root.getContext());
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(root.getContext(), R.layout.auto_complete_item, Arrays.asList("SELLER", "CUSTOMER"));
         binding.spnRol.setAdapter(adapter);
@@ -166,37 +146,50 @@ public class RegisterFragment extends Fragment {
 
             final Call<User> userCreateCall = retrofit.create(UserServices.class).create(user);
 
+
             call(userCreateCall, error -> {
                 if (error) {
                     progressDialog.dismiss();
                     return;
                 }
 
-                FirebaseServices.obtain().upload(uri, String.format("profile/%s.jpg", uid),
-                        new NetResponse<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                FancyToast.makeText(root.getContext(), "Successfully upload image", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                if(uri != null){
+                    FirebaseServices.obtain().upload(uri, String.format("profile/%s.jpg", uid),
+                            new NetResponse<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    FancyToast.makeText(root.getContext(), "Successfully upload image", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
 
-                                user.setPhoto(response);
-                                user.setUid(uid);
-                                final Call<User> userUpdateCall = retrofit.create(UserServices.class).update(user);
+                                    user.setPhoto(response);
+                                    user.setUid(uid);
+                                    final Call<User> userUpdateCall = retrofit.create(UserServices.class).update(user);
 
-                                call(userUpdateCall, res1 -> progressDialog.dismiss());
-                                Intent intent = new Intent(binding.getRoot().getContext(), MainActivity.class);
-                                intent.putExtra("name",user.getFirstName() +" "+ user.getLastName());
-                                intent.putExtra("email", user.getEmail());
-                                startActivity(intent);
-                                getParentFragmentManager().beginTransaction().remove(RegisterFragment.this).commitAllowingStateLoss();
-                            }
+                                    call(userUpdateCall, res1 -> progressDialog.dismiss());
+                                    session.createLoginSession(user);
+                                    Intent intent = new Intent(binding.getRoot().getContext(), MainActivity.class);
+                                    intent.putExtra("name",user.getFirstName() +" "+ user.getLastName());
+                                    intent.putExtra("email", user.getEmail());
+                                    startActivity(intent);
+                                    getParentFragmentManager().beginTransaction().remove(RegisterFragment.this).commitAllowingStateLoss();
+                                }
 
-                            @Override
-                            public void onFailure(Throwable t) {
-                                progressDialog.dismiss();
-                                FancyToast.makeText(root.getContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
-                            }
-                        });
+                                @Override
+                                public void onFailure(Throwable t) {
+                                    progressDialog.dismiss();
+                                    FancyToast.makeText(root.getContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                                }
+                            });
+                }else{
+                    progressDialog.dismiss();
+                    session.createLoginSession(user);
+                    Intent intent = new Intent(binding.getRoot().getContext(), MainActivity.class);
+                    intent.putExtra("name",user.getFirstName() +" "+ user.getLastName());
+                    intent.putExtra("email", user.getEmail());
+                    startActivity(intent);
+                }
             });
+
+
         }
     }
 

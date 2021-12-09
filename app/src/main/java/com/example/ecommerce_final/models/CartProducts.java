@@ -1,5 +1,7 @@
 package com.example.ecommerce_final.models;
 
+import java.util.List;
+
 public class CartProducts {
 
     private String uid;
@@ -7,6 +9,7 @@ public class CartProducts {
     private int quantity;
     private String description;
     private String encodedImage;
+    public List<Carousel> carousels;
 
     public CartProducts(String uid, double price, int quantity, String description, String encodedImage) {
         this.uid = uid;
@@ -54,5 +57,13 @@ public class CartProducts {
 
     public void setEncodedImage(String encodedImage) {
         this.encodedImage = encodedImage;
+    }
+
+    public List<Carousel> getCarousels() {
+        return carousels;
+    }
+
+    public void setCarousels(List<Carousel> carousels) {
+        this.carousels = carousels;
     }
 }

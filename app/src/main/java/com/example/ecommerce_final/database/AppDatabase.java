@@ -4,11 +4,9 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import com.example.ecommerce_final.models.Category;
-import com.example.ecommerce_final.models.Product;
-import com.example.ecommerce_final.models.User;
+import com.example.ecommerce_final.models.*;
 
-@Database(entities = {Category.class, Product.class}, version = 1)
+@Database(entities = {Category.class, Product.class, Carousel.class, NotificationModel.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "ecommerce";
     private static final Object LOCK = new Object();
@@ -25,4 +23,5 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract CategoryDAO categoryDAO();
     public abstract ProductDAO productDAO();
+    public abstract NotificationDAO notificationDAO();
 }

@@ -40,17 +40,14 @@ public class MainActivity extends AppCompatActivity {
 
         retrieveSession();
 
-
         setSupportActionBar(binding.appBarMain.toolbar);
-
-        Intent intent = getIntent();
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_category, R.id.nav_product)
+                R.id.nav_home, R.id.nav_category, R.id.nav_product, R.id.nav_profile)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -113,6 +110,10 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.action_search:
                 Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.nav_search);
+                return true;
+
+            case R.id.action_notifications:
+                Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.nav_notifications);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

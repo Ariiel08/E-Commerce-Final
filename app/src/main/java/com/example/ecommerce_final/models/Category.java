@@ -3,10 +3,11 @@ package com.example.ecommerce_final.models;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Category {
+public class Category implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String name;

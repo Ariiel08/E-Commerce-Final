@@ -42,31 +42,31 @@ public class LoginActivity extends AppCompatActivity {
 
         session = new PrefManager(getApplicationContext());
 
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Date.class, dateJsonDeserializer);
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://137.184.110.89:7002")
-                .addConverterFactory(GsonConverterFactory.create(gsonBuilder.create()))
-                .build();
-
-        Call<List<User>> userCall = retrofit.create(UserServices.class).getAll();
-
-        System.out.println("enqueue");
-        userCall.enqueue(new Callback<List<User>>() {
-             @Override
-             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                 System.out.println("onResponse...");
-                 response.body().forEach(obj -> {
-                     System.out.println(obj.toString());
-                 });
-             }
-
-             @Override
-             public void onFailure(Call<List<User>> call, Throwable t) {
-                 System.err.println("onFailure...");
-                 System.err.println(t.getLocalizedMessage());
-             }
-        });
+//        GsonBuilder gsonBuilder = new GsonBuilder();
+//        gsonBuilder.registerTypeAdapter(Date.class, dateJsonDeserializer);
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl("http://137.184.110.89:7002")
+//                .addConverterFactory(GsonConverterFactory.create(gsonBuilder.create()))
+//                .build();
+//
+//        Call<List<User>> userCall = retrofit.create(UserServices.class).getAll();
+//
+//        System.out.println("enqueue");
+//        userCall.enqueue(new Callback<List<User>>() {
+//             @Override
+//             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+//                 System.out.println("onResponse...");
+//                 response.body().forEach(obj -> {
+//                     System.out.println(obj.toString());
+//                 });
+//             }
+//
+//             @Override
+//             public void onFailure(Call<List<User>> call, Throwable t) {
+//                 System.err.println("onFailure...");
+//                 System.err.println(t.getLocalizedMessage());
+//             }
+//        });
 
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -75,6 +75,13 @@ public class LoginActivity extends AppCompatActivity {
             RegisterFragment registerFragment = new RegisterFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(binding.container.getId(), registerFragment);
+            fragmentTransaction.commit();
+        });
+
+        binding.tvForgotPass.setOnClickListener(v -> {
+            ForgotPasswordFragment forgotPasswordFragment = new ForgotPasswordFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(binding.container.getId(), forgotPasswordFragment);
             fragmentTransaction.commit();
         });
 

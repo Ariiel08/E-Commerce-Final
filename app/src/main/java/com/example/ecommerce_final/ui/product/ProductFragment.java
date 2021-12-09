@@ -18,11 +18,18 @@ import com.example.ecommerce_final.R;
 import com.example.ecommerce_final.adapters.CategoryAdapter;
 import com.example.ecommerce_final.adapters.ProductAdapter;
 import com.example.ecommerce_final.database.AppDatabase;
+import com.example.ecommerce_final.database.AppExecutors;
 import com.example.ecommerce_final.database.CategoryDAO;
 import com.example.ecommerce_final.database.ProductDAO;
 import com.example.ecommerce_final.databinding.FragmentProductBinding;
+import com.example.ecommerce_final.models.CarouselProducts;
 import com.example.ecommerce_final.models.Category;
 import com.example.ecommerce_final.models.Product;
+import com.example.ecommerce_final.models.User;
+import com.example.ecommerce_final.services.PrefManager;
+import com.example.ecommerce_final.utils.Constants;
+import com.shashank.sony.fancytoastlib.FancyToast;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +41,24 @@ public class ProductFragment extends Fragment {
     private ProductAdapter productAdapter;
     private AppDatabase appDatabase;
     private RecyclerView recyclerView;
+    private User user;
+    private PrefManager session;
     private int categoryId;
+    private int size = 0;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        retrieveSession();
+
+        appDatabase = AppDatabase.getInstance(getContext());
+        productDAO = appDatabase.productDAO();
+
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            size = appDatabase.categoryDAO().getCategories().size();
+        });
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -45,7 +69,7 @@ public class ProductFragment extends Fragment {
         appDatabase = AppDatabase.getInstance(root.getContext());
         productDAO = appDatabase.productDAO();
 
-        productAdapter = new ProductAdapter(root.getContext());
+        productAdapter = new ProductAdapter(root.getContext(), user);
 
         ProductViewModel productViewModel = new ProductViewModel(appDatabase);
         recyclerView = binding.recyclerProduct;
@@ -55,13 +79,13 @@ public class ProductFragment extends Fragment {
         try{
             if(this.getArguments().getInt("id") != -1){
                 categoryId = this.getArguments().getInt("id");
-                productViewModel.getProductListLiveData().observe(this, new Observer<List<Product>>() {
+                productViewModel.getProductListLiveData().observe(this, new Observer<List<CarouselProducts>>() {
                     @Override
-                    public void onChanged(List<Product> products) {
-                        List<Product> newProducts = new ArrayList<>();
-                        for (Product product : products) {
-                            if(product.getCategoryId() == categoryId){
-                                newProducts.add(product);
+                    public void onChanged(List<CarouselProducts> products) {
+                        List<CarouselProducts> newProducts = new ArrayList<>();
+                        for (CarouselProducts element : products) {
+                            if(element.product.getCategoryId() == categoryId){
+                                newProducts.add(element);
                             }
                         }
 
@@ -70,9 +94,9 @@ public class ProductFragment extends Fragment {
                 });
             }
         }catch (NullPointerException ex){
-            productViewModel.getProductListLiveData().observe(this, new Observer<List<Product>>() {
+            productViewModel.getProductListLiveData().observe(this, new Observer<List<CarouselProducts>>() {
                 @Override
-                public void onChanged(List<Product> products) {
+                public void onChanged(List<CarouselProducts> products) {
                     productAdapter.setProducts(products);
                 }
             });
@@ -82,10 +106,21 @@ public class ProductFragment extends Fragment {
 
         Bundle bundle = new Bundle();
         bundle.putInt("idProduct", -1);
-        binding.floatBtnAddProduct.setOnClickListener(v ->
-                Navigation.findNavController(root)
-                        .navigate(R.id.product_to_registerProduct, bundle));
+        bundle.putSerializable(Constants.PRODUCT_CAROUSEL, null);
+        bundle.putSerializable(Constants.USER, user);
+        binding.floatBtnAddProduct.setOnClickListener(v -> {
+                if(size > 0){
+                    Navigation.findNavController(root)
+                            .navigate(R.id.product_to_registerProduct, bundle);
+                }else{
+                    FancyToast.makeText(getContext(), "You need at least one category to register a product.", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                }
+            }
+        );
 
+        if (!this.user.getRol().equals(User.ROL.SELLER)) {
+            binding.floatBtnAddProduct.setVisibility(View.INVISIBLE);
+        }
 
         return root;
     }
@@ -94,5 +129,12 @@ public class ProductFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void retrieveSession() {
+        //create new session object by passing application context
+        session = new PrefManager(getContext());
+        //get User details if logged in
+        user = session.getUserSession();
     }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Cart {
     private List<CartProducts> cartProducts = new ArrayList<>();
+    private List<CarouselProducts> carouselProducts = new ArrayList<>();
 
     public Cart(){
 
@@ -21,6 +22,11 @@ public class Cart {
         return cartProducts;
     }
 
+    public List<CarouselProducts> getCarouselProducts() {
+        return carouselProducts;
+    }
+
+
     public void setProducts(List<CartProducts> products) {
         this.cartProducts = products;
     }
@@ -28,4 +34,10 @@ public class Cart {
     public void setProduct(CartProducts product){
         cartProducts.add(product);
     }
+
+    public void setCarouselProduct(CarouselProducts carouselProduct){
+        carouselProducts.add(carouselProduct);
+    }
+
+
 }

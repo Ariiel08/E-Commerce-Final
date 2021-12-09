@@ -14,6 +14,7 @@
     <string name="menu_category">Category</string>
     <string name="menu_product">Product</string>
     <string name="menu_cart">Cart</string>
+    <string name="menu_notifications">Notifications</string>
     <string name="menu_help">Help</string>
     <string name="menu_profile">Profile</string>
     <string name="menu_logout">Log Out</string>
@@ -36,11 +37,13 @@
     <string name="tvLogin">Login Now</string>
     <string name="tvRegister">Register Now</string>
     <string name="tvForgotPass">Forgot Password ?</string>
+    <string name="tvNewProducts">New Products</string>
 
     <string name="txtFirstName">First Name</string>
     <string name="txtLastName">Last Name</string>
     <string name="txtEmail">Email</string>
     <string name="txtPassword">Password</string>
+    <string name="txtNewPassword">New Password</string>
     <string name="txtConfirmPass">Confirm Password</string>
     <string name="txtContacts">Contact</string>
     <string name="txtBirthday">Select your birthday…</string>
@@ -55,7 +58,10 @@
     <string name="btnSelectCategoryImage">Select Image</string>
     <string name="btnAddCart">Add To Cart</string>
     <string name="btnDelete">Delete</string>
-
+    <string name="btnNext">Next</string>
+    <string name="btnPrevious">Previous</string>
+    <string name="btnClearAll">Clear All Notifications</string>
+    <string name="btnChangePassword">Change Password</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -11,6 +11,10 @@
             android:label="@string/menu_home"
             tools:layout="@layout/fragment_home"/>
 
+    <action
+            android:id="@+id/product_to_registerProduct"
+            app:destination="@id/nav_registerProduct" />
+
     <fragment
             android:id="@+id/nav_category"
             android:name="com.example.ecommerce_final.ui.category.CategoryFragment"
@@ -48,6 +52,10 @@
         <action
                 android:id="@+id/product_to_productDetails"
                 app:destination="@id/nav_productDetails" />
+
+        <action
+                android:id="@+id/product_refresh"
+                app:destination="@id/nav_product" />
     </fragment>
 
     <fragment
@@ -76,12 +84,16 @@
     <fragment
             android:id="@+id/nav_search"
             android:name="com.example.ecommerce_final.ui.SearchFragment"
-            android:label="@string/header_registerProduct"
+            android:label="@string/header_searchProduct"
             tools:layout="@layout/fragment_search">
 
         <action
                 android:id="@+id/main_to_search"
                 app:destination="@id/nav_search" />
+
+        <action
+                android:id="@+id/product_to_registerProduct"
+                app:destination="@id/nav_registerProduct" />
     </fragment>
 
     <fragment
@@ -89,6 +101,22 @@
             android:name="com.example.ecommerce_final.ui.cart.CartFragment"
             android:label="@string/menu_cart"
             tools:layout="@layout/fragment_cart">
+
+    </fragment>
+
+    <fragment
+            android:id="@+id/nav_notifications"
+            android:name="com.example.ecommerce_final.ui.notification.NotificationFragment"
+            android:label="@string/menu_notifications"
+            tools:layout="@layout/fragment_notification">
+
+    </fragment>
+
+    <fragment
+            android:id="@+id/nav_profile"
+            android:name="com.example.ecommerce_final.ui.ProfileFragment"
+            android:label="@string/menu_profile"
+            tools:layout="@layout/fragment_profile">
 
     </fragment>
 

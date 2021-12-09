@@ -1,5 +1,6 @@
 package com.example.ecommerce_final.services;
 
+import com.example.ecommerce_final.models.CarouselProducts;
 import com.example.ecommerce_final.models.Cart;
 import com.example.ecommerce_final.models.CartProducts;
 
@@ -31,5 +32,9 @@ public class CartServices {
 
     public void setCartProducts(CartProducts product){
         cart.setProduct(product);
+    }
+
+    public void setCarouselProducts(CarouselProducts carouselProducts){
+        cart.setCarouselProduct(carouselProducts);
     }
 }

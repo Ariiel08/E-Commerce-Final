@@ -22,6 +22,8 @@ import com.example.ecommerce_final.database.CategoryDAO;
 import com.example.ecommerce_final.databinding.FragmentCategoryBinding;
 import com.example.ecommerce_final.models.Category;
 import com.example.ecommerce_final.models.CategoryProducts;
+import com.example.ecommerce_final.models.User;
+import com.example.ecommerce_final.services.PrefManager;
 import com.example.ecommerce_final.ui.login.RegisterFragment;
 
 import java.util.ArrayList;
@@ -35,6 +37,18 @@ public class CategoryFragment extends Fragment {
     private AppDatabase appDatabase;
     private CategoryAdapter categoryAdapter;
     private RecyclerView recyclerView;
+    private User user;
+    private PrefManager session;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        retrieveSession();
+
+        appDatabase = AppDatabase.getInstance(getContext());
+        categoryDAO = appDatabase.categoryDAO();
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -42,10 +56,7 @@ public class CategoryFragment extends Fragment {
         binding = FragmentCategoryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        appDatabase = AppDatabase.getInstance(root.getContext());
-        categoryDAO = appDatabase.categoryDAO();
-
-        categoryAdapter = new CategoryAdapter(root.getContext());
+        categoryAdapter = new CategoryAdapter(root.getContext(), user);
 
         CategoryViewModel categoryViewModel = new CategoryViewModel(appDatabase);
         recyclerView = binding.recyclerCategory;
@@ -66,6 +77,10 @@ public class CategoryFragment extends Fragment {
                 Navigation.findNavController(root)
                 .navigate(R.id.category_to_registerCategory, bundle));
 
+        if (!this.user.getRol().equals(User.ROL.SELLER)) {
+            binding.floatBtnAddCategory.setVisibility(View.INVISIBLE);
+        }
+
         return root;
     }
 
@@ -73,5 +88,12 @@ public class CategoryFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void retrieveSession() {
+        //create new session object by passing application context
+        session = new PrefManager(getContext());
+        //get User details if logged in
+        user = session.getUserSession();
     }
 }

@@ -18,5 +18,5 @@
             android:clickable="true" android:id="@+id/floatBtnAddProduct"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"
-            app:layout_constraintHorizontal_bias="0.498" app:backgroundTint="@color/colorPrimary"/>
+            app:layout_constraintHorizontal_bias="0.498" app:backgroundTint="@color/purple_500"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

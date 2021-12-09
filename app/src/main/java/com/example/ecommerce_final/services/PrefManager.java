@@ -121,11 +121,7 @@ public class PrefManager {
                 if(gson.fromJson(aux, CartProducts.class).getUid().equals(cartProduct.getUid())){
                     CartProducts cartProduct2 = gson.fromJson(aux, CartProducts.class);
 
-                    for (CartProducts x :cartServices.getCart().getProducts()) {
-                        if(x.getUid().equals(cartProduct2.getUid())){
-                            cartServices.getCart().getProducts().remove(x);
-                        }
-                    }
+                    cartServices.getCart().getProducts().removeIf(x -> x.getUid().equals(cartProduct2.getUid()));
 
                     cartProduct2.setQuantity(cartProduct2.getQuantity() + cartProduct.getQuantity());
                     cartServices.setCartProducts(cartProduct2);
@@ -181,7 +177,7 @@ public class PrefManager {
     }
 
     public void update(String key, String value){
-        Set<String> set = sharedPreferences.getStringSet(key, null);
+        Set<String> set = new HashSet<>();
         set.add(value);
         editor.putStringSet(key, set);
         editor.apply();
