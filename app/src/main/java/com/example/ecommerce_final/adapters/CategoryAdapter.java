@@ -27,6 +27,7 @@ import com.example.ecommerce_final.models.User;
 import com.example.ecommerce_final.services.FirebaseServices;
 import com.example.ecommerce_final.services.NetResponse;
 import com.example.ecommerce_final.ui.login.LoginActivity;
+import com.example.ecommerce_final.utils.CommonUtil;
 import com.shashank.sony.fancytoastlib.FancyToast;
 import org.jetbrains.annotations.NotNull;
 
@@ -98,20 +99,24 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                                 .navigate(R.id.category_to_registerCategory, bundle);
                         return true;
                     case R.id.delete_product:
-                        AppExecutors.getInstance().diskIO().execute(() -> {
-                            CategoryDAO categoryDAO = AppDatabase.getInstance(context).categoryDAO();
-                            if(categoryDAO.getCategories().get(holder.getAdapterPosition()).product.size() > 0){
-                                ((Activity) context).runOnUiThread(new Thread(){
-                                    @Override
-                                    public void run(){
-                                        FancyToast.makeText(context, "This category can't be deleted because it has products associated.", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
-                                    }
+                        CommonUtil.alertDialog(context, "Confirm dialog delete!",
+                                "You are about to delete a category. Do you really want to proceed?",
+                                () -> {
+                                    AppExecutors.getInstance().diskIO().execute(() -> {
+                                        CategoryDAO categoryDAO = AppDatabase.getInstance(context).categoryDAO();
+                                        if(categoryDAO.getCategories().get(holder.getAdapterPosition()).product.size() > 0){
+                                            ((Activity) context).runOnUiThread(new Thread(){
+                                                @Override
+                                                public void run(){
+                                                    FancyToast.makeText(context, "This category can't be deleted because it has products associated.", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                                                }
+                                            });
+                                        }else{
+                                            Category category = categoryDAO.getCategories().get(holder.getAdapterPosition()).category;
+                                            categoryDAO.delete(category);
+                                        }
+                                    });
                                 });
-                            }else{
-                                Category category = categoryDAO.getCategories().get(holder.getAdapterPosition()).category;
-                                categoryDAO.delete(category);
-                            }
-                        });
                         return true;
                     default:
                         return false;

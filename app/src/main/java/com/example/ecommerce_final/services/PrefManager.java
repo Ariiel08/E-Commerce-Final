@@ -71,6 +71,11 @@ public class PrefManager {
     }
 
     public void logout() {
+        editor.remove("products");
+        editor.commit();
+        cartServices.getCart().setProducts(new ArrayList<>());
+        Set<String> set = new HashSet<>();
+        editor.putStringSet("products", set);
         editor.putBoolean(IS_LOGIN, false);
         editor.putString(USER, null);
         editor.commit();

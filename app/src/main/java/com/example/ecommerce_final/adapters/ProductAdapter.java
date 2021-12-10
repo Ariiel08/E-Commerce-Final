@@ -33,6 +33,7 @@ import com.example.ecommerce_final.services.NetResponse;
 import com.example.ecommerce_final.services.PrefManager;
 import com.example.ecommerce_final.ui.product.ProductDetailsFragment;
 import com.example.ecommerce_final.ui.product.ProductFragment;
+import com.example.ecommerce_final.utils.CommonUtil;
 import com.example.ecommerce_final.utils.Constants;
 import com.shashank.sony.fancytoastlib.FancyToast;
 import org.jetbrains.annotations.NotNull;
@@ -83,7 +84,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull @NotNull ProductAdapter.ViewHolder holder, int position) {
         holder.tvUid.setText(elements.get(position).product.getUid());
-        holder.tvPrice.setText(String.valueOf(elements.get(position).product.getPrice()));
+        holder.tvPrice.setText("$"+String.valueOf(elements.get(position).product.getPrice()));
         holder.tvDesc.setText(elements.get(position).product.getDescription());
 
         if (elements.get(position).carousels != null && !elements.get(position).carousels.isEmpty()) {
@@ -118,26 +119,30 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
                         return true;
                     case R.id.delete_product:
-                        AppExecutors.getInstance().diskIO().execute(() -> {
-                            ProductDAO productDAO = AppDatabase.getInstance(context).productDAO();
-                            Product product = productDAO.getProducts().get(holder.getAdapterPosition());
+                        CommonUtil.alertDialog(context, "Confirm dialog delete!",
+                                "You are about to delete a product. Do you really want to proceed?",
+                                () -> {
+                                    AppExecutors.getInstance().diskIO().execute(() -> {
+                                        ProductDAO productDAO = AppDatabase.getInstance(context).productDAO();
+                                        Product product = productDAO.getProducts().get(holder.getAdapterPosition());
 
-                            if(cartServices.getCart().getProducts().size() > 0){
-                                for (CartProducts cartProducts: cartServices.getCart().getProducts()) {
-                                    if(cartProducts.getUid().equals(product.getUid())){
-                                        cartServices.getCart().getProducts().remove(cartProducts);
-                                        break;
-                                    }
-                                }
+                                        if(cartServices.getCart().getProducts().size() > 0){
+                                            for (CartProducts cartProducts: cartServices.getCart().getProducts()) {
+                                                if(cartProducts.getUid().equals(product.getUid())){
+                                                    cartServices.getCart().getProducts().remove(cartProducts);
+                                                    break;
+                                                }
+                                            }
 
-                                productDAO.deleteCarousels(product.getId());
-                                productDAO.delete(product);
-                            }else{
-                                productDAO.deleteCarousels(product.getId());
-                                productDAO.delete(product);
-                            }
-                        });
-                        refreshFragment();
+                                            productDAO.deleteCarousels(product.getId());
+                                            productDAO.delete(product);
+                                        }else{
+                                            productDAO.deleteCarousels(product.getId());
+                                            productDAO.delete(product);
+                                        }
+                                    });
+                                    refreshFragment();
+                                });
                         return true;
                     default:
                         return false;
@@ -225,6 +230,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private void refreshFragment(){
         Navigation.findNavController(binding.getRoot()).popBackStack();
         Navigation.findNavController(binding.getRoot())
-                .navigate(R.id.registerProduct_to_product);
+                .navigate(R.id.nav_product);
     }
 }

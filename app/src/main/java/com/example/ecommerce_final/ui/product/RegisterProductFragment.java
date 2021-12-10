@@ -148,23 +148,16 @@ public class RegisterProductFragment extends Fragment {
             if(drawables.size() > 0){
                 drawables.remove(position);
 
+                if(position > 0){
+                    position--;
+                }
+
                 if(drawables.size() == 0){
                     binding.imgSelectProduct.setImageDrawable(null);
                 }else{
                     binding.imgSelectProduct.setImageDrawable(drawables.get(position));
                 }
-
-                if(position > 0){
-                    position--;
-                }
             }
-
-//            if(position > 0){
-//                position--;
-//                System.out.println("position: "+position);
-//                binding.imgSelectProduct.setImageDrawable(drawables.get(position));
-//                drawables.remove(position);
-//            }
         });
 
         binding.btnAddProduct.setOnClickListener(v -> {
